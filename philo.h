@@ -30,6 +30,7 @@ typedef struct s_philosophers
 	int			left_fork;
 	int			nb_eat;
 	long long	timestamp;
+	
 	t_rules		*rules;
 	struct s_philosophers	*next;
 	
@@ -37,7 +38,7 @@ typedef struct s_philosophers
 
 
 // void	ft_lstadd_back(t_philo **lst, t_philo *new);
-void*	philosophers(void);
+
 t_philo	*ft_lstnew(int i, t_rules *rules);
 void	initing_philosophers(t_philo **philosopher, t_rules *rules);
 void	entring_arguments(t_rules *rules, char	**argv);

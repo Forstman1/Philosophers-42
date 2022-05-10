@@ -14,11 +14,7 @@
 
 #include "philo.h"
 
-void*	philosophers()
-{
-	printf("philosopher Alive\n");
-	return 0;
-}
+
 
 void	ft_lstadd_back(t_philo **lst, t_philo *new)
 {
@@ -26,7 +22,10 @@ void	ft_lstadd_back(t_philo **lst, t_philo *new)
 
 	root = *lst;
 	if (!(*lst))
+	{
 		*lst = new;
+		return ;
+	}
 	else
 	{
 		while (root->next != NULL)
@@ -37,9 +36,13 @@ void	ft_lstadd_back(t_philo **lst, t_philo *new)
 
 int		time_stamp(void)
 {
-	int i;
-
-	i = gettimeofday();
+	long long i;
+	struct timeval current_time;
+	
+	gettimeofday(&current_time, NULL);
+	i = current_time.tv_sec;
+	i *= 1000;
+	return (i);
 }
 
 t_philo	*ft_lstnew(int i, t_rules *rules)

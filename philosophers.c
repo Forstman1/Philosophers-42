@@ -15,6 +15,16 @@
 #include <pthread.h>
 
 
+void*	philosophers(void *arg)
+{
+	t_philo *philo;
+
+	philo = (t_philo*)arg;
+	printf("philosopher Alive : %d\n", philo->id);
+	// while (lst)
+	return 0;
+}
+
 void lunching_threads(t_philo *philo, t_rules rules)
 {
 	int i;
@@ -22,18 +32,19 @@ void lunching_threads(t_philo *philo, t_rules rules)
 
 	i = 1;
 	lst = philo;
-	while (lst)
+	while (lst && i != lst->rules->nb_philo)
 	{
-		pthread_create(&(lst->thread_id), NULL, &philosophers, NULL);
+		pthread_create(&(lst->thread_id), NULL, &philosophers, lst);
 		lst = lst->next;
+		i++;
 	}
 	usleep(500);
 }
 
-void	checkdeath(t_rules *rules)
-{
-	
-}
+// void	checkdeath(t_rules *rules)
+// {
+
+// }
 
 int main(int argc, char	*argv[])
 {
@@ -49,7 +60,7 @@ int main(int argc, char	*argv[])
 	entring_arguments(&rules, argv);
 	initing_philosophers(&philo, &rules);
 	lunching_threads(philo, rules);
-	checkdeath(&rules);
+	// checkdeath(&rules);
 
 
 
