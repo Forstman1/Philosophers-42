@@ -1,7 +1,5 @@
 
 
-
-
 CFILES  = philo_utils.c 
 
 OFILES	= $(CFILES:.c=.o)
@@ -29,4 +27,4 @@ re: fclean all
 
 execute: re all philosophers.c
 	@$(CC) $(FLAGS) philosophers.c philo.a -o philo 
-	@./philo 4 1 1 1
+	@./philo 50000 410 200 200

@@ -12,17 +12,54 @@
 
 
 #include "philo.h"
-#include <pthread.h>
 
+
+void	philo_eats(t_philo *philo)
+{
+	t_philo *right_fork;
+
+
+	right_fork = philo->next;
+	pthread_mutex_lock(&philo->fork);
+	printf("%ld %d  has taken a fork\n", time_stamp() - philo->rules->timestamp, philo->id);
+	pthread_mutex_lock(&right_fork->fork);
+	printf("%ld %d  has taken a fork\n", time_stamp() - philo->rules->timestamp, philo->id);
+	printf("%ld %d  is eating\n", time_stamp() - philo->rules->timestamp, philo->id);
+	philo->last_time_eated = time_stamp();
+	usleep((philo->rules->time_to_eat * 1000));
+	philo->nb_eat += 1;
+	if (philo->rules->number_times_to_eat == philo->nb_eat)
+		philo->rules->philo_eated++;
+	pthread_mutex_unlock(&philo->fork);
+	pthread_mutex_unlock(&right_fork->fork);
+}
+
+void	philo_sleeping(t_philo *philo)
+{
+	printf("%ld %d  is sleeping\n", time_stamp() - philo->rules->timestamp, philo->id);
+	usleep((philo->rules->time_to_sleep * 1000));
+}
+
+void	philo_thinking(t_philo *philo)
+{
+	printf("%ld %d  is thinking\n", time_stamp() - philo->rules->timestamp, philo->id);
+}
 
 void*	philosophers(void *arg)
 {
 	t_philo *philo;
 
 	philo = (t_philo*)arg;
-	printf("philosopher Alive : %d\n", philo->id);
-	// while (lst)
-	return 0;
+	if (philo->id % 2)
+		usleep(100);
+
+	while (!(philo->rules->dead))
+	{ 
+		philo_eats(philo);
+		philo_sleeping(philo);
+		philo_thinking(philo);
+	}
+	return (0);
 }
 
 void lunching_threads(t_philo *philo, t_rules rules)
@@ -32,19 +69,33 @@ void lunching_threads(t_philo *philo, t_rules rules)
 
 	i = 1;
 	lst = philo;
-	while (lst && i != lst->rules->nb_philo)
+	while (lst && i <= lst->rules->nb_philo)
 	{
 		pthread_create(&(lst->thread_id), NULL, &philosophers, lst);
+		lst->last_time_eated = time_stamp();
 		lst = lst->next;
 		i++;
 	}
-	usleep(500);
 }
 
-// void	checkdeath(t_rules *rules)
-// {
-
-// }
+void	checkdeath(t_rules *rules, t_philo *philo)
+{
+	while (1)
+	{
+		if (rules->nb_philo == rules->philo_eated)
+		{
+			philo->rules->dead = 1;
+			return ;
+		}
+		if (time_stamp() - philo->last_time_eated > philo->rules->time_to_die)
+		{
+			printf("philosopher : %d is dead\n", philo->id);
+			philo->rules->dead = 1;
+			return ;
+		}
+		usleep(500);
+	}
+}
 
 int main(int argc, char	*argv[])
 {
@@ -60,7 +111,8 @@ int main(int argc, char	*argv[])
 	entring_arguments(&rules, argv);
 	initing_philosophers(&philo, &rules);
 	lunching_threads(philo, rules);
-	// checkdeath(&rules);
+	checkdeath(&rules, philo);
+	
 
 
 
