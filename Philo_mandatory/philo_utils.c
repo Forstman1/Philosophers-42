@@ -59,14 +59,21 @@ t_philo	*ft_lstnew(int i, t_rules *rules)
 void	entring_arguments(t_rules *rules, char	**argv)
 {
 	rules->nb_philo = atoi(argv[1]);
+	if (rules->nb_philo == 0)
+		error();
 	rules->time_to_die = atoi(argv[2]);
 	rules->time_to_eat = atoi(argv[3]);
 	rules->time_to_sleep = atoi(argv[4]);
 	if (argv[5] != NULL)
+	{
 		rules->number_times_to_eat = atoi(argv[5]);
+		if (rules->number_times_to_eat == 0)
+			error();
+	}
 	else
 		rules->number_times_to_eat = -1;
 	rules->dead = 0;
+	pthread_mutex_init(&rules->mutex, NULL);
 	rules->timestamp = time_stamp();
 }
 

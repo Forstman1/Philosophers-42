@@ -57,9 +57,10 @@ void	checkdeath(t_rules *rules, t_philo *philo)
 		}
 		if (time_stamp() - philo->last_time_eated > philo->rules->time_to_die)
 		{
+			philo->rules->dead = 1;
+			usleep(500);
 			printf("%ld philosopher  %d is dead\n", time_stamp() - \
 			philo->last_time_eated, philo->id);
-			philo->rules->dead = 1;
 			return ;
 		}
 		philo = philo->next;
@@ -82,5 +83,6 @@ int	main(int argc, char	*argv[])
 	initing_philosophers(&philo, &rules);
 	lunching_threads(philo, rules);
 	checkdeath(&rules, philo);
+	free_all(&philo, &rules);
 	return (0);
 }

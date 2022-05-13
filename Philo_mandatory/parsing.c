@@ -54,7 +54,7 @@ void	checking_arguments(char	**argv)
 	while (argv[i])
 	{
 		checkvalid(argv[i]);
-		if (ft_atoi(argv[i]) >= 2147483647 || ft_atoi(argv[i]) < 1)
+		if (ft_atoi(argv[i]) > 2147483647 || ft_atoi(argv[i]) < 0)
 			error();
 		i++;
 	}

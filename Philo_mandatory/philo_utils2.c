@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void	free_all(t_philo **philo)
+void	free_all(t_philo **philo, t_rules *rules)
 {
 	t_philo	*tmp;
 	t_philo	*lst;
@@ -30,6 +30,7 @@ void	free_all(t_philo **philo)
 			lst = tmp;
 		i++;
 	}
+	pthread_mutex_destroy(&rules->mutex);
 }
 
 int	ft_isspace(const char *a)
