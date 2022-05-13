@@ -5,12 +5,53 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sahafid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/12 14:21:10 by sahafid           #+#    #+#             */
-/*   Updated: 2022/05/12 14:21:11 by sahafid          ###   ########.fr       */
+/*   Created: 2022/05/13 20:40:50 by sahafid           #+#    #+#             */
+/*   Updated: 2022/05/13 20:40:51 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
+
+
+int	ft_isspace(const char *a)
+{
+	return (*a == '\t'
+		|| *a == '\n'
+		|| *a == '\v'
+		|| *a == '\f'
+		|| *a == '\r'
+		|| *a == ' ');
+}
+
+long long	ft_atoi(const char *str)
+{
+	char		*a;
+	int			i;
+	long long	res;
+	int			sign;
+
+	a = (char *)str;
+	i = 0;
+	res = 0;
+	sign = 1;
+	while (ft_isspace(&a[i]))
+		i++;
+	if (a[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	else if (a[i] == '+')
+		i++;
+	while (a[i] >= '0' && a[i] <= '9')
+		res = res * 10 + a[i++] - '0';
+	return (res * sign);
+}
+
+int	ft_isdigit(int a)
+{
+	return (a >= 48 && a <= 57);
+}
 
 int	checkvalid(char *str)
 {

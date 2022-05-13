@@ -1,17 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: sahafid <marvin@42.fr>                     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/12 15:08:45 by sahafid           #+#    #+#             */
-/*   Updated: 2022/05/12 15:08:47 by sahafid          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
+
+
+
+#ifndef PHILO_BONUS_H
+# define PHILO_BONUS_H
 
 # include <stdio.h>
 # include <pthread.h>
@@ -19,13 +11,12 @@
 # include <unistd.h>
 # include <string.h>
 # include <sys/time.h>
-# include "philo.h"
+# include "philo_bonus.h"
 
 typedef struct s_philosophers
 {
 	int						id;
 	pthread_t				thread_id;
-	pthread_mutex_t			fork;
 	int						nb_eat;
 	long					last_time_eated;
 	struct s_rules			*rules;
@@ -39,12 +30,13 @@ typedef struct s_rules
 	int				time_to_sleep;
 	int				time_to_eat;
 	int				number_times_to_eat;
-	pthread_mutex_t mutex;
 	int				dead;
 	int				philo_eated;
 	long			timestamp;
 	int				id_dead_philo;
 }		t_rules;
+
+
 
 t_philo		*ft_lstnew(int i, t_rules *rules);
 int			initing_philosophers(t_philo **philosopher, t_rules *rules);
@@ -58,5 +50,6 @@ int			checking_arguments(char	**argv);
 long long	ft_atoi(const char *str);
 int			ft_isdigit(int a);
 void		error(void);
+void	print_state(t_philo *philo, int i);
 
 #endif

@@ -5,12 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sahafid <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/04/01 11:47:39 by sahafid           #+#    #+#             */
-/*   Updated: 2022/04/01 11:47:40 by sahafid          ###   ########.fr       */
+/*   Created: 2022/05/13 14:31:06 by sahafid           #+#    #+#             */
+/*   Updated: 2022/05/13 14:31:08 by sahafid          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+
+#include "philo_bonus.h"
+
 
 void	*philosophers(void *arg)
 {
@@ -28,46 +30,33 @@ void	*philosophers(void *arg)
 	return (0);
 }
 
+
 int	lunching_threads(t_philo *philo, t_rules rules)
 {
 	int		i;
 	t_philo	*lst;
+	int		id;
 
 	i = 1;
+	id = 0;
 	lst = philo;
 	if (!lst)
 		return (1);
 	while (lst && i <= lst->rules->nb_philo)
 	{
-		pthread_create(&(lst->thread_id), NULL, &philosophers, lst);
-		lst->last_time_eated = time_stamp();
-		lst = lst->next;
+		if (id == 0)
+		{
+			pthread_create(&(lst->thread_id), NULL, &philosophers, lst);
+			lst->last_time_eated = time_stamp();
+			lst = lst->next;
+		}
+		else
+			id = fork();
 		i++;
 	}
 	return (0);
 }
 
-void	checkdeath(t_rules *rules, t_philo *philo)
-{
-	while (1)
-	{
-		if (rules->nb_philo == rules->philo_eated)
-		{
-			philo->rules->dead = 1;
-			return ;
-		}
-		if (time_stamp() - philo->last_time_eated > philo->rules->time_to_die)
-		{
-			philo->rules->dead = 1;
-			usleep(500);
-			printf("%ld philosopher  %d is dead\n", time_stamp() - \
-			philo->last_time_eated, philo->id);
-			return ;
-		}
-		philo = philo->next;
-		usleep(500);
-	}
-}
 
 int	all_functions(t_philo **philo, t_rules *rules, char **argv)
 {
@@ -76,14 +65,12 @@ int	all_functions(t_philo **philo, t_rules *rules, char **argv)
 	if (entring_arguments(rules, argv))
 		return (1);
 	if (initing_philosophers(philo, rules))
-	{
-		free_all(philo, rules);
 		return (1);
-	}
 	if (lunching_threads(*philo, *rules))
 		return (1);
 	return (0);
 }
+
 
 int	main(int argc, char	*argv[])
 {
@@ -97,7 +84,5 @@ int	main(int argc, char	*argv[])
 		return (write(2, "entre the correct amount of arguments\n", 39));
 	if (all_functions(&philo, &rules, argv))
 		return (write(2, "ERROR ON THE ARGUMENTS\n", 24));
-	checkdeath(&rules, philo);
-	free_all(&philo, &rules);
 	return (0);
 }
