@@ -28,7 +28,7 @@ void	*philosophers(void *arg)
 	return (0);
 }
 
-int	lunching_threads(t_philo *philo, t_rules rules)
+int	lunching_threads(t_philo *philo)
 {
 	int		i;
 	t_philo	*lst;
@@ -59,9 +59,11 @@ void	checkdeath(t_rules *rules, t_philo *philo)
 		if (time_stamp() - philo->last_time_eated > philo->rules->time_to_die)
 		{
 			philo->rules->dead = 1;
-			usleep(500);
+			usleep(200);
+			pthread_mutex_lock(&(philo->rules->mutex));
 			printf("%ld philosopher  %d is dead\n", time_stamp() - \
 			philo->last_time_eated, philo->id);
+			pthread_mutex_unlock(&(philo->rules->mutex));
 			return ;
 		}
 		philo = philo->next;
@@ -80,7 +82,7 @@ int	all_functions(t_philo **philo, t_rules *rules, char **argv)
 		free_all(philo, rules);
 		return (1);
 	}
-	if (lunching_threads(*philo, *rules))
+	if (lunching_threads(*philo))
 		return (1);
 	return (0);
 }
@@ -89,7 +91,6 @@ int	main(int argc, char	*argv[])
 {
 	t_rules	rules;
 	t_philo	*philo;
-	int		j;
 	int		i;
 
 	i = 0;

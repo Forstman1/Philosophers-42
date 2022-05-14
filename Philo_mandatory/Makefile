@@ -6,6 +6,7 @@ OFILES	= $(CFILES:.c=.o)
 
 CC	= gcc
 INT	= philo.h
+FLAGS = -Wall -Wextra -Werror
 NAME = philo
 
 all : $(NAME)
@@ -14,7 +15,7 @@ $(NAME) : $(OFILES) philosophers.c
 	@$(CC) $(FLAGS) philosophers.c $(OFILES) -o philo 
 
 %.o:%.c
-	@$(CC) -o $@ -c $<
+	@$(CC) $(FLAGS) -o $@ -c $<
 
 clean:
 	@rm -f $(OFILES)

@@ -26,10 +26,23 @@ void	*philosophers(void *arg)
 		philo_eats(philo);
 		philo_sleeping(philo);
 		philo_thinking(philo);
+		// sleep(1);
+		philo->rules->dead = 1;
 	}
 	return (0);
 }
 
+void	p_thread(t_philo *philo)
+{
+	t_philo *lst;
+
+	lst = philo;
+	lst->last_time_eated = time_stamp();
+	// pthread_create(&(lst->thread_id), NULL, &philosophers, lst);
+	while (!philo->rules->dead)
+		philosophers((void*)lst);
+	exit(1);
+}
 
 int	lunching_threads(t_philo *philo, t_rules rules)
 {
@@ -38,21 +51,19 @@ int	lunching_threads(t_philo *philo, t_rules rules)
 	int		id;
 
 	i = 1;
-	id = 0;
+	id = 1;
 	lst = philo;
 	if (!lst)
 		return (1);
 	while (lst && i <= lst->rules->nb_philo)
 	{
-		if (id == 0)
-		{
-			pthread_create(&(lst->thread_id), NULL, &philosophers, lst);
-			lst->last_time_eated = time_stamp();
-			lst = lst->next;
-		}
-		else
-			id = fork();
+		lst->thread_id = fork();
+		if (lst->thread_id < 0)
+			exit(0);
+		else if (lst->thread_id == 0)
+			p_thread(lst);	
 		i++;
+		lst = lst->next;
 	}
 	return (0);
 }
@@ -66,8 +77,15 @@ int	all_functions(t_philo **philo, t_rules *rules, char **argv)
 		return (1);
 	if (initing_philosophers(philo, rules))
 		return (1);
-	if (lunching_threads(*philo, *rules))
-		return (1);
+	lunching_threads(*philo, *rules);
+	while (1)
+	{
+		printf("%d\n", (*philo)->rules->dead);
+		if ((*philo)->rules->dead == 1)
+			printf("ana hna\n");
+		sleep(2);	
+		usleep(1000);
+	}
 	return (0);
 }
 

@@ -16,7 +16,7 @@
 typedef struct s_philosophers
 {
 	int						id;
-	pthread_t				thread_id;
+	int						thread_id;
 	int						nb_eat;
 	long					last_time_eated;
 	struct s_rules			*rules;
