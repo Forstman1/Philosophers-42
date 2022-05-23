@@ -25,6 +25,7 @@ t_philo	*ft_lstnew(int i, t_rules *rules)
 	philo->id = i;
 	philo->rules = rules;
 	philo->last_time_eated = 0;
+	philo->done_eating = 0;
 	philo->next = NULL;
 	return (philo);
 }
