@@ -63,7 +63,6 @@ void	checkdeath(t_rules *rules, t_philo *philo)
 			pthread_mutex_lock(&(philo->rules->mutex));
 			printf("%ld philosopher  %d is dead\n", time_stamp() - \
 			philo->last_time_eated, philo->id);
-			pthread_mutex_unlock(&(philo->rules->mutex));
 			return ;
 		}
 		philo = philo->next;

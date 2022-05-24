@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "philo_bonus.h"
 
 void	print_state(t_philo *philo, int i)
@@ -63,4 +62,31 @@ void	philo_sleeping(t_philo *philo)
 void	philo_thinking(t_philo *philo)
 {
 	print_state(philo, 4);
+}
+
+int	lunching_threads(t_philo *philo, t_rules rules)
+{
+	int		i;
+	t_philo	*lst;
+	int		id;
+	sem_t	*mutex;
+
+	i = 1;
+	id = 1;
+	lst = philo;
+	sem_unlink("mutex");
+	mutex = sem_open("mutex", O_CREAT, 666, rules.nb_philo);
+	if (!lst)
+		return (1);
+	while (lst && i <= lst->rules->nb_philo)
+	{
+		lst->process_id = fork();
+		if (lst->process_id < 0)
+			exit(0);
+		else if (lst->process_id == 0)
+			p_thread(lst, mutex);
+		i++;
+		lst = lst->next;
+	}
+	return (0);
 }

@@ -12,7 +12,6 @@
 
 #include "philo_bonus.h"
 
-
 int	ft_isspace(const char *a)
 {
 	return (*a == '\t'

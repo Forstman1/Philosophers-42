@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "philo_bonus.h"
-
 
 t_philo	*ft_lstnew(int i, t_rules *rules)
 {
@@ -25,6 +23,7 @@ t_philo	*ft_lstnew(int i, t_rules *rules)
 	philo->id = i;
 	philo->rules = rules;
 	philo->last_time_eated = 0;
+	philo->nb_eat = 0;
 	philo->done_eating = 0;
 	philo->next = NULL;
 	return (philo);
@@ -78,8 +77,6 @@ long	time_stamp(void)
 	return (i);
 }
 
-
-
 int	entring_arguments(t_rules *rules, char	**argv)
 {
 	rules->nb_philo = ft_atoi(argv[1]);
@@ -100,4 +97,3 @@ int	entring_arguments(t_rules *rules, char	**argv)
 	rules->timestamp = time_stamp();
 	return (0);
 }
-

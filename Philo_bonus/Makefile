@@ -1,6 +1,6 @@
 
 
-CFILES  = philo_routine.c  parsing.c philo_utils.c
+CFILES  = philo_routine.c  parsing.c philo_utils.c checkdeath.c
 
 OFILES	= $(CFILES:.c=.o)
 
@@ -26,4 +26,4 @@ re: fclean all
 
 
 execute: re all philosophers_bonus.c
-	@./philo_bonus 4 410 200 200 1
+	@./philo_bonus 4 410 200 200 2

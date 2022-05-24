@@ -39,7 +39,7 @@ typedef struct s_rules
 	int				time_to_sleep;
 	int				time_to_eat;
 	int				number_times_to_eat;
-	pthread_mutex_t mutex;
+	pthread_mutex_t	mutex;
 	int				dead;
 	int				philo_eated;
 	long			timestamp;

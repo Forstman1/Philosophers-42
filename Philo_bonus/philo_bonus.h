@@ -1,6 +1,14 @@
-
-
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sahafid <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/05/24 14:06:03 by sahafid           #+#    #+#             */
+/*   Updated: 2022/05/24 14:06:05 by sahafid          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
@@ -41,8 +49,6 @@ typedef struct s_rules
 	int				id_dead_philo;
 }		t_rules;
 
-
-
 t_philo		*ft_lstnew(int i, t_rules *rules);
 int			initing_philosophers(t_philo **philosopher, t_rules *rules);
 int			entring_arguments(t_rules *rules, char	**argv);
@@ -56,5 +62,8 @@ long long	ft_atoi(const char *str);
 int			ft_isdigit(int a);
 void		error(void);
 void		print_state(t_philo *philo, int i);
+int			lunching_threads(t_philo *philo, t_rules rules);
+void		p_thread(t_philo *philo, sem_t *mutex);
+void		checksituation(t_philo *philo);
 
 #endif
