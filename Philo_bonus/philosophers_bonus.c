@@ -27,7 +27,7 @@ void	*checkdeath(void	*lst)
 		}
 		if (time_stamp() - philo->last_time_eated > philo->rules->time_to_die)
 			exit(1);
-		usleep(5000);
+		usleep(500);
 	}
 	return (0);
 }
@@ -42,6 +42,7 @@ void	philosophers(t_philo *philo, sem_t *mutex)
 		philo_sleeping(philo);
 		philo_thinking(philo);
 	}
+	sem_close(mutex);
 }
 
 void	p_thread(t_philo *philo, sem_t *mutex)
@@ -67,6 +68,8 @@ int	all_functions(t_philo **philo, t_rules *rules, char **argv)
 	if (lunching_threads(*philo, *rules))
 		return (1);
 	checksituation(*philo);
+	free_all(philo, (*philo)->rules);
+	sem_unlink("mutex");
 	return (0);
 }
 
@@ -74,7 +77,6 @@ int	main(int argc, char	*argv[])
 {
 	t_rules	rules;
 	t_philo	*philo;
-	int		j;
 	int		i;
 
 	i = 0;

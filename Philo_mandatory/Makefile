@@ -25,6 +25,5 @@ fclean:	clean
 
 re: fclean all
 
-
 execute: re all philosophers.c
 	@./philo 4 410 200 200

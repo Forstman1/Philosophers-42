@@ -6,6 +6,7 @@ OFILES	= $(CFILES:.c=.o)
 
 CC	= gcc
 INT	= philo_bonus.h
+FLAGS = -Wall -Werror -Wextra
 NAME = philo_bonus
 
 all : $(NAME)
@@ -24,6 +25,5 @@ fclean:	clean
 
 re: fclean all
 
-
 execute: re all philosophers_bonus.c
-	@./philo_bonus 4 410 200 200 2
+	@./philo_bonus 4 410 200 200 5

@@ -40,3 +40,22 @@ void	checksituation(t_philo *philo)
 		i++;
 	}
 }
+
+void	free_all(t_philo **philo, t_rules *rules)
+{
+	t_philo	*tmp;
+	t_philo	*lst;
+	int		i;
+
+	lst = *philo;
+	i = 1;
+	while (i <= lst->rules->nb_philo)
+	{
+		tmp = lst->next;
+		free(lst);
+		lst = NULL;
+		if (tmp)
+			lst = tmp;
+		i++;
+	}
+}

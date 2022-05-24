@@ -44,6 +44,7 @@ void	print_state(t_philo *philo, int i)
 void	philo_eats(t_philo *philo)
 {
 	t_philo	*right_fork;
+	long	start;
 
 	right_fork = philo->next;
 	pthread_mutex_lock(&philo->fork);
@@ -51,7 +52,9 @@ void	philo_eats(t_philo *philo)
 	pthread_mutex_lock(&right_fork->fork);
 	print_state(philo, 1);
 	print_state(philo, 2);
-	usleep((philo->rules->time_to_eat * 1000));
+	start = time_stamp();
+	while (time_stamp() - start < philo->rules->time_to_eat)
+		usleep(100);
 	philo->last_time_eated = time_stamp();
 	philo->nb_eat += 1;
 	if (philo->rules->number_times_to_eat == philo->nb_eat)
@@ -62,8 +65,12 @@ void	philo_eats(t_philo *philo)
 
 void	philo_sleeping(t_philo *philo)
 {
+	long	start;
+
 	print_state(philo, 3);
-	usleep((philo->rules->time_to_sleep * 1000));
+	start = time_stamp();
+	while (time_stamp() - start < philo->rules->time_to_sleep)
+		usleep(100);
 }
 
 void	philo_thinking(t_philo *philo)

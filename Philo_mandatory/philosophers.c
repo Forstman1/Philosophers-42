@@ -59,9 +59,8 @@ void	checkdeath(t_rules *rules, t_philo *philo)
 		if (time_stamp() - philo->last_time_eated > philo->rules->time_to_die)
 		{
 			philo->rules->dead = 1;
-			usleep(200);
 			pthread_mutex_lock(&(philo->rules->mutex));
-			printf("%ld philosopher  %d is dead\n", time_stamp() - \
+			printf("%ld %d  died\n", time_stamp() - \
 			philo->last_time_eated, philo->id);
 			return ;
 		}

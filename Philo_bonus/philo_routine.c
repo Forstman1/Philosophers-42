@@ -41,12 +41,16 @@ void	print_state(t_philo *philo, int i)
 
 void	philo_eats(t_philo *philo, sem_t *mutex)
 {
+	long	start;
+
 	sem_wait(mutex);
 	print_state(philo, 1);
 	sem_wait(mutex);
 	print_state(philo, 1);
 	print_state(philo, 2);
-	usleep((philo->rules->time_to_eat * 1000));
+	start = time_stamp();
+	while (time_stamp() - start < philo->rules->time_to_eat)
+		usleep(100);
 	philo->last_time_eated = time_stamp();
 	philo->nb_eat += 1;
 	sem_post(mutex);
@@ -55,8 +59,12 @@ void	philo_eats(t_philo *philo, sem_t *mutex)
 
 void	philo_sleeping(t_philo *philo)
 {
+	long	start;
+
 	print_state(philo, 3);
-	usleep((philo->rules->time_to_sleep * 1000));
+	start = time_stamp();
+	while (time_stamp() - start < philo->rules->time_to_sleep)
+		usleep(100);
 }
 
 void	philo_thinking(t_philo *philo)
